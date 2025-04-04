@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Хани чорт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+            background: black;
+            color: white;
+        }
+
+        .screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .start-text {
+            font-size: 26px;
+            color: #ff66cc;
+            animation: glow 2s ease-in-out infinite alternate;
+            cursor: pointer;
+            text-shadow: 0 0 15px #ff99cc;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff66cc;
+            }
+
+            to {
+                text-shadow: 0 0 25px #ff99cc, 0 0 35px #ff99cc;
+            }
+        }
+
+        .portal {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        .portal h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-family: 'Pacifico', cursive;
+        }
+
+        .enter-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #ff66cc, #ff99cc);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff66cc;
+            transition: transform 0.3s;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            height: 100vh;
+            color: #fff;
+            text-shadow: 1px 1px 4px #000;
+            padding: 20px;
+            position: relative;
+        }
+
+        .main-content h2 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            font-family: 'Pacifico', cursive;
+        }
+
+        .reveal-btn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid white;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .reveal-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .hidden-text {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            max-width: 450px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .input-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #ff66cc;
+            color: #fff;
+            background-color: transparent;
+        }
+
+        .input-container button {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #ff66cc, #ff99cc);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .input-container button:hover {
+            transform: scale(1.05);
+        }
+
+        #heart-btn {
+            margin-top: 30px;
+            padding: 15px 25px;
+            font-size: 24px;
+            color: #ff66cc;
+            background: transparent;
+            border: 2px solid #ff66cc;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            transition: transform 0.3s;
+        }
+
+        #heart-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .star {
+            font-size: 48px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+
+        .star:hover {
+            transform: scale(1.2);
+        }
+
+        .animated-heart {
+            width: 100px;
+            height: 100px;
+            background: url
+            background-size: cover;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .download-btn {
+            margin-top: 30px;
+            padding: 12px 28px;
+            background: #ff66cc;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #ff99cc;
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bg-music" autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <div class="screen start" onclick="showPortal()">
+        <div class="start-text">Ты оказалась в волшебном мире… Всё, что тебе нужно — найти путь к сердцу одного
+            человека. Готова начать?</div>
+    </div>
+
+    <div class="screen portal" id="portal">
+        <h1>Привет, Хани. Это — путь к твоему сердцу 💖</h1>
+        <button class="enter-btn" onclick="enterLevel1()">Начать путешествие ✨</button>
+    </div>
+
+    <!-- Уровень 1 -->
+    <div class="screen" id="level1" style="display: none;">
+        <h1>Уровень 1: Найди звезду, что ведет к началу...</h1>
+        <div>
+            <span class="star" onclick="checkStar(1)">⭐</span>
+            <span class="star" onclick="checkStar(2)">⭐</span>
+            <span class="star" onclick="checkStar(3)">⭐</span>
+            <span class="star" onclick="checkStar(4)">⭐</span>
+            <span class="star" onclick="checkStar(5)">⭐</span>
+        </div>
+    </div>
+
+    <!-- Уровень 2 -->
+    <div class="screen" id="level2" style="display: none;">
+        <h1>Уровень 2: Загадка</h1>
+        <p>Я скажу тебе, кто ты для меня, только если разгадаешь загадку...</p>
+        <p><strong>Загадка:</strong> "Она милая, как её имя. Её смех — как интернал поинт. Кто она?"</p>
+        <div class="input-container">
+            <input type="text" id="answer" placeholder="Введите ответ..." />
+            <button onclick="checkAnswer()">Ответить</button>
+        </div>
+    </div>
+
+    <!-- Уровень 3 -->
+    <div class="screen" id="level3" style="display: none;">
+        <h1>Уровень 3: Что ты бы выбрала?</h1>
+        <p>Любой твой выбор — идеален, если ты рядом со мной.</p>
+        <button onclick="revealMessage()">Посмотреть Аркейн</button>
+        <button onclick="revealMessage()">Погулять под звёздами</button>
+        <button onclick="revealMessage()">Просто обнять меня и молчать</button>
+        <button onclick="revealMessage()">Интернал поинт вериэбл</button>
+    </div>
+
+    <!-- Финальный уровень -->
+    <div class="screen" id="final" style="display: none;">
+        <h1>Поздравляем, ты прошла квест!</h1>
+        <div class=""></div>
+        <p>Ты завершила путь, и теперь ты знаешь, что ты сидишь на кортах</p>
+        <p>Лю тя💖</p>
+        <button class="download-btn" onclick="downloadGift()">Скачать подарок 🎁</button>
+    </div>
+
+    <script>
+        function showPortal() {
+            document.querySelector('.start').style.display = 'none';
+            document.getElementById('portal').style.display = 'flex';
+        }
+
+        function enterLevel1() {
+            document.getElementById('portal').style.display = 'none';
+            document.getElementById('level1').style.display = 'flex';
+        }
+
+        let correctStar = 3;
+        function checkStar(star) {
+            if (star === correctStar) {
+                document.getElementById('level1').style.display = 'none';
+                document.getElementById('level2').style.display = 'flex';
+            } else {
+                alert('Не эта звезда, попробуй другую!');
+            }
+        }
+
+        function checkAnswer() {
+            const answer = document.getElementById('answer').value.trim().toLowerCase();
+            if (answer === 'хани') {
+                document.getElementById('level2').style.display = 'none';
+                document.getElementById('level3').style.display = 'flex';
+            } else {
+                alert('Ответ неправильный, попробуй снова!');
+            }
+        }
+
+        function revealMessage() {
+            alert("Любой твой выбор — идеален, если ты рядом со мной.");
+            document.getElementById('level3').style.display = 'none';
+            document.getElementById('final').style.display = 'flex';
+        }
+
+        function downloadGift() {
+            alert("Ты заслужила этот подарок! 💖");
+            const downloadLink = document.createElement('a');
+            downloadLink.href = 'https://i.pinimg.com/736x/1e/52/87/1e5287fb456bd6e0a016bb058073bd6c.jpg'; // Путь к твоему GIF файлу
+            downloadLink.download = 'gift-image.gif'; // Имя файла при скачивании
+            downloadLink.click(); // Симулируем клик по ссылке
+        }
+
+    </script>
+</body>
+
+</html>
